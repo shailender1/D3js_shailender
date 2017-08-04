@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<import html="main.html">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-2.0.0.js"></script>
+    <style>
+    #map {
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+    .background {
+      fill: none;
+      pointer-events: all;
+    }
+    #countries, #states {
+      fill: #cde;
+      stroke: #fff;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    #countries .active, #states .active {
+      fill: #89a;
+    }    
+    #cities {
+      stroke-width: 0;
+    }
+    .city {
+      fill: #345;
+      stroke: #fff;
+    }
+    #states {
+        stroke: #000;
+        fill-opacity: .7;
+    }
+   
+    pre.prettyprint {
+      border: 1px solid #ccc;
+      margin-bottom: 0;
+      padding: 9.5px;
+    }
+    </style>
+  </head>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/topojson.v1.min.js"></script>
+  <script src="map.js" type="text/javascript"></script>
+  <script src="lineGraph.js" type="text/javascript"></script>  
+
+   
+  <body>
+    <div id="scales"></div>
+    <div id="buttons"></div>
+    <div id="map" align = "right"></div>
+    <div id= "svg-container">
+ 		<svg id="viz" class ="chart" width="720" height="405"></svg>
+ 	</div>
+    <script type="text/javascript">
+       getMaps();       
+    </script>
+
+  </body>
+</html>
