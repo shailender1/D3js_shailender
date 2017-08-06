@@ -1,7 +1,11 @@
-﻿function getMaps(){ 
+function getMaps(element){ 
+
+console.log("component is: ", element.value);	
  
+document.getElementById("pollutionInfo").innerHTML = element.value +  " value in US over a period of 2006 -2010. ";
+
 //d3.csv("Phoneix_Data_Pollution.csv", function(d) {
-d3.csv("data/pollution_us_2006_2010.csv", function(d) {
+d3.csv("pollution_us_2006_2010.csv", function(d) {
 	return {
 	    //year: new Date(+d.Year, 0, 1), // convert "Year" column to Date
 	    state : d.State,
@@ -23,30 +27,59 @@ d3.csv("data/pollution_us_2006_2010.csv", function(d) {
 	  	
 	  	var meanDataByState = d3.nest()
 	  	                    .key(function(d) {return d.state;})
-	  	                    .rollup(function(v) { return d3.mean(v, function(d) { return d.NO2_mean; }); })
+	  	                    .rollup(function(v) { return d3.mean(v, function(d) {
+	  	                    													  if(element.value === "NO2_mean" ){return d.NO2_mean;}
+	  	                    													  if(element.value === "SO2_mean" ){return d.SO2_mean;}
+	  	                    													  if(element.value === "O3_mean" ){return d.O3_mean;}
+	  	                    													  if(element.value === "CO_mean" ){return d.CO_mean;}
+	  	                    	                                                 }); 
+	  	                                         })
 	  	                    .entries(data);
 	  	  	
-	  	loadMaps(meanDataByState);
+	  	loadMaps(meanDataByState,element.value);
 	});
 }
 
-function loadMaps(meanDataByState){
-	var m_width = $("#map").width(),
-    width = 938,
-    height = 700,
+function loadMaps(meanDataByState, poll_element){
+	
+	getScales(poll_element);
+
+	var m_width = 
+    width = $("#map").width(),
+    height = $("#map").width(),
     //country,
     state;
 
+	if(poll_element === "NO2_mean"){
+		var color = d3.scaleThreshold()
+		.domain([5,20,40])
+		 .range(["#ffffcc","#c2e699","#78c679","#31a354"]);
+	}
+	if(poll_element === "O3_mean"){
+		var color = d3.scaleThreshold()
+		.domain([0,0.02,0.04])
+		 .range(["#ffffb3","#ffe0b3","#ffad33","#ff9900"]);
+	}
+	if(poll_element === "SO2_mean"){
+		var color = d3.scaleThreshold()
+		.domain([0,3,10,25])
+		 .range(["#ffe6ff", "#faebf5","#e085c2","#cc3399"]);
+	}
+	if(poll_element === "CO_mean"){
+		var color = d3.scaleThreshold()
+		.domain([0,0.5,2,3])
+		 .range(["#cce6ff","#ff80b3","#ff3333","#ff0000"]);
+	}
 
-var color = d3.scaleThreshold()
-.domain([5, 20, 40, 80])
- .range(["#ffffcc","#c2e699","#78c679","#31a354","#006837"]);
+
+
+
 
 var projection = d3.geoAlbersUsa();
     
 var path = d3.geoPath().projection(projection);
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#map")
     .attr("width", width)
     .attr("height", height);      
  
@@ -61,11 +94,17 @@ svg.selectAll("rect")
 .attr("height", height)        
 .on("click", state_clicked);
 
-d3.json("data/states_usa.topo.json" , function(error, us) {
+console.log("mean_data : ", meanDataByState);
+
+d3.json("states_usa.topo.json" , function(error, us) {
 	
 	//Loop through each state data value in the .csv file
 	for (var i = 0; i < meanDataByState.length; i++) {
 
+		/* if(meanDataByState[i].value > max_mean_data){
+			 max_mean_data = meanDataByState[i].value;
+			 max_state = meanDataByState[i].key;
+		 }*/
 		// Grab State Name
 		var dataState = meanDataByState[i].key;
 
@@ -85,8 +124,10 @@ d3.json("data/states_usa.topo.json" , function(error, us) {
 			break;
 			}
 		}
-	}	
+	}
 	
+
+
     g.append("g")
       .attr("id", "states")
       .selectAll("path")
@@ -105,9 +146,20 @@ d3.json("data/states_usa.topo.json" , function(error, us) {
 	    		//If value is undefined…
 	    		return "rgb(213,222,217)";
     		}
-       })
-    	 //                return color(d.density = d.properties.population / d.properties.area); })
+       })    	 
       .on("click", state_clicked)
+      .on('mouseover', function(d, i) {
+
+       var currentState = this;
+       		d3.select(this).style('fill-opacity', 1);
+       })
+       .on('mouseout', function(d, i) {
+        	  
+               d3.selectAll('path')
+                       .style('fill-opacity',.7 );
+        })
+        
+      
 });
 
 function get_xyz(d) {
@@ -130,7 +182,7 @@ function state_clicked(d) {
     country_code = state.id.substring(0, 3).toLowerCase();
     state_name = state.properties.name;
 
-    d3.json("data/cities_usa.topo.json", function(error, us) {
+    d3.json("cities_usa.topo.json", function(error, us) {
       g.append("g")
         .attr("id", "cities")
         .selectAll("path")
@@ -141,13 +193,12 @@ function state_clicked(d) {
         .attr("class", "city")
         .attr("d", path.pointRadius(20 / xyz[2]));
 
-      //zoom(xyz);
+      zoom(xyz);
     });
-    
-    callLineGraph(state_name);
+
+    loadLineGraph(state_name, poll_element);
   } else {
     state = null;
-    //country_clicked(country);
   }
 }
 
@@ -159,7 +210,3 @@ function state_clicked(d) {
 
 }
 	
-	
-function callLineGraph(state){    	
-	loadLineGraph(state);
-}
