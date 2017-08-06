@@ -9,40 +9,6 @@
 	<link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-2.0.0.js"></script>
     <style>
-    #map {
-      background-color: #fff;
-      border: 1px solid #ccc;
-    }
-    .background {
-      fill: none;
-      pointer-events: all;
-    }
-    #countries, #states {
-      fill: #cde;
-      stroke: #fff;
-      stroke-linejoin: round;
-      stroke-linecap: round;
-    }
-    #countries .active, #states .active {
-      fill: #89a;
-    }    
-    #cities {
-      stroke-width: 0;
-    }
-    .city {
-      fill: #345;
-      stroke: #fff;
-    }
-    #states {
-        stroke: #000;
-        fill-opacity: .7;
-    }
-   
-    pre.prettyprint {
-      border: 1px solid #ccc;
-      margin-bottom: 0;
-      padding: 9.5px;
-    }
     </style>
 
 </head>
@@ -50,15 +16,33 @@
   <script src="https://d3js.org/topojson.v1.min.js"></script>
   <script src="js/map.js" type="text/javascript"></script>
   <script src="js/lineGraph.js" type="text/javascript"></script>  
+  <script src="scales.js" type="text/javascript"></script>  
 <body>
 
-<div class="container">
-	<div id= "svg-container">
- 		<svg id="viz" class ="chart" width="720" height="405"></svg>
+    <div id="mainTitle" height= "90" align = "center">    
+      Data Visualization Project - US Pollution Stats from 2006 - 2010 
+    </div>
+    <div id= "svg-container">
+       <div id="info-container">
+        <div id="buttons" align="left" width = "400" height="100">
+	       <button type="button" id="#NO2"  value="NO2_mean" onclick="getMaps(this);">NO2</button>
+	       <button type="button" id="#O3"  value="O3_mean" onclick="getMaps(this);">O3</button>
+	       <button type="button" id="#SO2"  value="SO2_mean" onclick="getMaps(this);">SO2</button>
+	       <button type="button" id="#CO"  value="CO_mean" onclick="getMaps(this);">CO</button>
+    	 </div>
+    	 <div id="pollutionInfo" align="center"></div>
+    	</div>
+       <div id="map-container" width ="940" height="600">            
+            <div id="lineChart"></div>
+            <div id="lineData"></div>
+       		<svg id="chart" width="200" height="200" ></svg>
+ 		<svg id="map" width="938" height="600"></svg>
+ 		<svg id="scale" width="200" height="75" ></svg> 			 				
+ 	   </div>
  	</div>
-</div>
+       	        <svg id="viz" class ="chart" width="720" height="405"></svg>
+ 	</div> -->
     <script type="text/javascript">
-       getMaps();       
     </script>
 	
 </body>
