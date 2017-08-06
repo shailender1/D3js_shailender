@@ -3,6 +3,10 @@ body 						{ padding-top:50px; }
     #map {
       background-color: #fff;
       border: 1px solid #ccc;
+      padding-right:30px;
+      padding-bottom:650px;
+      border: 5px solid transparent;
+      float: right;
     }
     .background {
       fill: none;
@@ -34,3 +38,78 @@ body 						{ padding-top:50px; }
       margin-bottom: 0;
       padding: 9.5px;
     }
+    
+    #scale-container  {
+        float: right;
+  		margin: 0;  		
+  		padding-right: 40px;	
+	}
+	
+	 button {
+	  color: #fff;
+	  display: inline-block;
+	  margin: 0 10px 0 0;
+	  padding: 15px 24px;
+	  font-size: 18px;
+	  font-family: "Bitter",serif;
+	  line-height: 1.8;
+	  appearance: none;
+	  box-shadow: none;
+	  border-radius: 0;
+	  background-color: #6496c8;
+	  text-shadow: -1px 1px #417cb8;
+	  border: none;
+	  padding-top:15px;
+}
+	
+
+
+	#lineChart{
+		font-size: 20px;
+		font-weight: normal;
+		color: black;
+
+	}
+	
+	#lineData{
+		font-size: 25px;
+		font-weight: normal;
+		color: red;	
+	}
+	
+	#map-container{
+	  padding-bottom:50px;
+	}
+	
+	#mainTitle{
+		font-size: 40px;
+		font-weight: bold;
+		color: red;
+	    padding-bottom:50px;
+	    padding-right:10px;
+	}
+	
+	#pollutionInfo{
+	    font-size: 25px;
+	    font-weight: bold;
+	    color: purple;
+	    padding-bottom:35px;
+	
+	}
+	
+	#buttonsInfo{
+	    font-size: 18px;
+	    font-weight: bold;
+	    color: blue;
+	    padding-bottom:35px;
+	
+	}
+	
+	#scaleInfo{
+	  padding-right:60px;
+	}
+	#essay{
+		font-size: 25px;
+	    font-weight: italic;
+	    color: blue;
+	}

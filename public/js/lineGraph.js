@@ -1,10 +1,8 @@
 function loadLineGraph(stateMap, poll_element){
 	
-	d3.selectAll("#chart > *").remove();
+	d3.selectAll("#chart > *").remove();		
 	
-	document.getElementById("lineChart").innerHTML = poll_element + "value timeline for " + stateMap;
-	
-	console.log("the state is: ", stateMap);
+	document.getElementById("lineChart").innerHTML = poll_element + " value for the timeline of " + stateMap;
 	
 	var svg = d3.select("#chart");
 	var margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -22,19 +20,18 @@ function loadLineGraph(stateMap, poll_element){
 	
 	var line = d3.line()
 	.x(function(d) { 
-		             console.log(d.key);
 		             return x(d.key); })
-	.y(function(d) { console.log(d.value);
+	.y(function(d) { 
 		              return y(d.value);});
 	
-	d3.csv("pollution_us_2006_2010.csv", function(d) {
+	d3.csv("data/pollution_us_2006_2010.csv", function(d) {
 		  return {
 		    //year: new Date(+d.Year, 0, 1), // convert "Year" column to Date
 		    state : d.State,
 		    county : d.County,
 		    city : d.City,
 		    date : new Date(d.Date),
-		    NO2_mean : +d["NO2 Mean"],
+		    NO2_Mean : +d["NO2 Mean"],
 		    NO2_units : d["NO2 Units"],
 		    O3_Mean : +d["O3 Mean"],	
 		    O3_Units : d["O3 Units"],
@@ -50,48 +47,46 @@ function loadLineGraph(stateMap, poll_element){
 		  	                    .key(function(d) {return d.state;})
 		  	                    .entries(data);
 	  	 
-
 		  	for (var i = 0; i < dataByState.length; i++) {
-
-		  		console.log(typeof(dataByState[i].key));
                 if(dataByState[i].key === stateMap ){
-                	var dataFiltered = dataByState[i].value;
-
+                	var dataFiltered = dataByState[i].values;
                 	break;
                 }                
 				
 		  	}
 		  	
+		  	//var dataFiltered = dataByState.filter(function (d) { return d.key === stateMap })
+		  	
+	  	
 		  	 if(dataFiltered === undefined){		  		
 			  		 console.log("No data exists");
 			  		 document.getElementById("lineData").innerHTML = "No Data exists";			  	 
 		  		 
 		  	 }else{
+		  	 document.getElementById("lineData").innerHTML ="";		  	
 			 var dataByMonths = d3.nest()
              .key(function (d){return d.date.getFullYear()})
                .rollup(function(v) { return d3.mean(v, function(d) { 		  			
-								  	                        	if(poll_element === "NO2_mean" ){return y(d.NO2_mean);}
-										  	    				if(poll_element === "SO2_mean" ){return y(d.SO2_mean);}
-										  	  					if(poll_element === "O3_mean" ){return y(d.O3_mean);}
-										  	  					if(poll_element === "CO_mean" ){return y(d.CO_mean);}	
+								  	                        	if(poll_element === "NO2_mean" ){return d.NO2_Mean;}
+										  	    				if(poll_element === "SO2_mean" ){return d.SO2_Mean;}
+										  	  					if(poll_element === "O3_mean" ){return d.O3_Mean;}
+										  	  					if(poll_element === "CO_mean" ){return d.CO_Mean;}	
              	                                             });
                })
 
              .entries (dataFiltered)
-
-             console.log("filtered data is: ", dataByMonths);
-	
-		      var mindate = new Date("2006"),
-	            maxdate = new Date("2010");
 	        
-			  //x.domain(d3.extent(dataByMonths, function(d) { return d.key; }));
-		      x.domain(["2006","2010"]);
+			  //x.domain(d3.extent(dataByMonths, function(d) { return new Date(d.key).getFullYear(); }));
+             x.domain(["2006","2010"]);
 			  y.domain(d3.extent(dataByMonths, function(d) { return d.value; }));
+			  
+				
 	          	  
 			  g.append("g")
 			      .attr("transform", "translate(0," + height + ")")
 			      .call(d3.axisBottom(x))
 			      .select(".domain");
+			      
 
 
 			  g.append("g")

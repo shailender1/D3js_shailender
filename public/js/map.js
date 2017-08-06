@@ -1,11 +1,11 @@
-function getMaps(element){ 
+﻿function getMaps(element){ 
 
-console.log("component is: ", element.value);	
+console.log("component is: ", element.value);
  
 document.getElementById("pollutionInfo").innerHTML = element.value +  " value in US over a period of 2006 -2010. ";
 
 //d3.csv("Phoneix_Data_Pollution.csv", function(d) {
-d3.csv("pollution_us_2006_2010.csv", function(d) {
+d3.csv("data/pollution_us_2006_2010.csv", function(d) {
 	return {
 	    //year: new Date(+d.Year, 0, 1), // convert "Year" column to Date
 	    state : d.State,
@@ -96,15 +96,11 @@ svg.selectAll("rect")
 
 console.log("mean_data : ", meanDataByState);
 
-d3.json("states_usa.topo.json" , function(error, us) {
+d3.json("data/states_usa.topo.json" , function(error, us) {
 	
 	//Loop through each state data value in the .csv file
 	for (var i = 0; i < meanDataByState.length; i++) {
 
-		/* if(meanDataByState[i].value > max_mean_data){
-			 max_mean_data = meanDataByState[i].value;
-			 max_state = meanDataByState[i].key;
-		 }*/
 		// Grab State Name
 		var dataState = meanDataByState[i].key;
 
@@ -157,9 +153,11 @@ d3.json("states_usa.topo.json" , function(error, us) {
         	  
                d3.selectAll('path')
                        .style('fill-opacity',.7 );
-        })
+        })       
+    
+  document.getElementById("scaleInfo").innerHTML = "Parts per billion units";
+  
         
-      
 });
 
 function get_xyz(d) {
@@ -182,7 +180,7 @@ function state_clicked(d) {
     country_code = state.id.substring(0, 3).toLowerCase();
     state_name = state.properties.name;
 
-    d3.json("cities_usa.topo.json", function(error, us) {
+    d3.json("data/cities_usa.topo.json", function(error, us) {
       g.append("g")
         .attr("id", "cities")
         .selectAll("path")
@@ -193,7 +191,7 @@ function state_clicked(d) {
         .attr("class", "city")
         .attr("d", path.pointRadius(20 / xyz[2]));
 
-      zoom(xyz);
+      //zoom(xyz);
     });
 
     loadLineGraph(state_name, poll_element);

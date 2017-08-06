@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>US Pollution</title>
-
-	<!-- CSS -->
+  <head>
+    <meta charset="utf-8">
+    <!-- CSS -->
 	<!-- load bootstrap and our own personal stylesheet -->
 	<link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-2.0.0.js"></script>
     <style>
     </style>
-
-</head>
+  </head>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://d3js.org/topojson.v1.min.js"></script>
   <script src="js/map.js" type="text/javascript"></script>
-  <script src="js/lineGraph.js" type="text/javascript"></script>  
-  <script src="scales.js" type="text/javascript"></script>  
-<body>
+  <script src="js/lineGraph.js" type="text/javascript"></script>
+  <script src="js/scales.js" type="text/javascript"></script>  
 
+   
+  <body>
     <div id="mainTitle" height= "90" align = "center">    
       Data Visualization Project - US Pollution Stats from 2006 - 2010 
-    </div>
+    </div>    
     <div id= "svg-container">
        <div id="info-container">
+       <div id="buttonsInfo">
+          Please select the Pollutant Components for Analysis.
+       </div>
+  
         <div id="buttons" align="left" width = "400" height="100">
 	       <button type="button" id="#NO2"  value="NO2_mean" onclick="getMaps(this);">NO2</button>
 	       <button type="button" id="#O3"  value="O3_mean" onclick="getMaps(this);">O3</button>
@@ -33,17 +35,34 @@
     	 <div id="pollutionInfo" align="center"></div>
     	</div>
        <div id="map-container" width ="940" height="600">            
-            <div id="lineChart"></div>
-            <div id="lineData"></div>
+             <div id="lineChart"></div>
+            <div id="lineData" value=""></div>
        		<svg id="chart" width="200" height="200" ></svg>
- 		<svg id="map" width="938" height="600"></svg>
- 		<svg id="scale" width="200" height="75" ></svg> 			 				
+ 			<svg id="map" width="938" height="600"></svg>
+ 			<svg id="scale" width="200" height="75" ></svg>
+ 			<div id="scaleInfo"></div> 			 				
  	   </div>
  	</div>
-       	        <svg id="viz" class ="chart" width="720" height="405"></svg>
- 	</div> -->
+ 	</div>
+ 	   <div id="essay">
+ 	   This visualization present the pollution data in US form the time period 2006 - 2010. The 4 major pollutants are anyalyzed - NO2, SO2, CO, O3.
+	   The data set has been taken form Kaggle site. The data has recorded pollutant easurements for each day for the time period. 
+	   
+	   The data is available for most of the cities in USA.For this visualization the data has been limited to the major cities in every state. 
+	   The data has been worked upon to reduce the extensive data provided in the data set.The data has been grouped by states.
+	   
+	   For the visualization D3.js library is used. The structure adopted for narrative viz is drill down story. The data on a high level shows the 
+	   spread of pollutant components for the latest year. The user can then drill down and view the detail information for each state. 
+	   
+	   This can be done by clicking on each state and selecting any of the pollutants. US Map is selected to give an overview of the spread of the 
+	   selected pollutant over all the states. Line chart is then adopted to show the timeline of the selected polluatant for the selected US state.
+	   
+	   The paramters in this visualization are the buttons for selecting the pollutants. The states are the triggers which can be clicked to further analyze the data in detail. The user events are button clicks to select the pollutant. CSS is used to highlight the buttons.The other user event is clicking on the US states. This is communicated by showing the hoover over the states when the mouse is moved over the map.
+	   Scale has been added to show the spread of pollutant. There is a use CSS3 and HTML5 for presentation of the page.
+ 	   </div>
+
     <script type="text/javascript">
     </script>
-	
-</body>
+
+  </body>
 </html>
